@@ -70,4 +70,9 @@ public class UserGroup implements UserComponent, Visitable {
 		
 	}
 	
+	@Override
+	public String toString() {
+	    return groupName + " (" + groupID + ")";
+	}
+	
 }

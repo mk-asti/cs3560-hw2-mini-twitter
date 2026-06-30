@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.SwingUtilities;
 
 import user_functions.feed.*;
 import admin_service.Visitable;
@@ -18,6 +19,9 @@ public class User extends Subject implements Observer, UserComponent, Visitable 
 	private List<String> following;
 	private List<String> followers;
 	private UserFeed userFeed;
+	
+	private final List<Runnable> uiRefreshListeners = new ArrayList<>();
+	private final List<Runnable> uiFollowRefreshListeners = new ArrayList<>();
 	
 	// create new user with a unique user id, username, empty following + followers list, empty user feed
 	// place new user in main root group
@@ -35,6 +39,7 @@ public class User extends Subject implements Observer, UserComponent, Visitable 
 	@Override
 	public void update(NewPost post) {
 		userFeed.addPost(post);
+		notifyUi();
 	}
 
 	@Override
@@ -77,5 +82,32 @@ public class User extends Subject implements Observer, UserComponent, Visitable 
 	public void accept(Visitor visitor) {
 		visitor.visit(this);
 		
+	}
+	
+	// method for live refreshes
+	public void addUiRefreshListener(Runnable listener) {
+        this.uiRefreshListeners.add(listener);
+    }
+	
+	// uhhh???
+	public void notifyUi() {
+	    for (Runnable listener : uiRefreshListeners) {
+	        SwingUtilities.invokeLater(listener);
+	    }
+	}
+	
+	public void addUiFollowRefreshListener(Runnable listener) {
+	    this.uiFollowRefreshListeners.add(listener);
+	}
+	
+	public void notifyFollowUi() {
+	    for (Runnable listener : uiFollowRefreshListeners) {
+	        SwingUtilities.invokeLater(listener);
+	    }
+	}
+	
+	@Override
+	public String toString() {
+	    return userName + " (" + userID + ")";
 	}
 }

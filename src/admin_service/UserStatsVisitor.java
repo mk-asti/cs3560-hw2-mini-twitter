@@ -91,7 +91,7 @@ public class UserStatsVisitor implements Visitor {
 	
 	// helper method: calculate positivity post percentage
 	public double calculatePercentage() {
-		if(totalPositivityCount == 0) {
+		if(totalPostCount == 0) {
 			return 0.0;
 		}
 		

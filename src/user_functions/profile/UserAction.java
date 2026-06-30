@@ -10,6 +10,8 @@ public class UserAction {
 		user.getUserFeed().addPost(post);
 		user.notifyObservers(post);
 		
+		user.notifyUi();
+		
 	}
 	
 	public static void followUser(User user, String targetID) {
@@ -18,6 +20,9 @@ public class UserAction {
             user.getFollowing().add(targetID);
             target.getFollowers().add(user.getID());
             target.attach(user);
+            
+            user.notifyFollowUi();
+            target.notifyFollowUi();
         }
 	}
 }
