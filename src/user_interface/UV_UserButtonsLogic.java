@@ -1,3 +1,8 @@
+/*
+ * logiic class for user buttons panel
+ * 	> (data hodler) holds reference to currently open user view
+ */
+
 package user_interface;
 
 import user_functions.profile.User;

@@ -1,3 +1,10 @@
+/* 
+ * singleton class
+ * 	> represents admin control window
+ * 	> extends JFrame to act as main window
+ * 	> only one instance of the control panel can exist at a time
+ */
+
 package admin_service;
 
 import javax.swing.JFrame;
@@ -7,7 +14,7 @@ import user_interface.CP_AdminButtonsLogic;
 
 public class ControlPanel extends JFrame{
 	private static ControlPanel instance;
-	
+
 	// create one and only one instance of a control panel
 	public static ControlPanel getInstance() {
 		if(instance == null) {

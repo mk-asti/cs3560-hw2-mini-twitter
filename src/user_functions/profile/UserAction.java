@@ -1,8 +1,15 @@
+/*
+ * coordinator class
+ * 	> handles logic for user actions (posting tweets, following other users) 
+ */
+
 package user_functions.profile;
 
 import user_functions.feed.NewPost;
 
 public class UserAction {
+	
+	// creates new post by a given user
 	public static void newTweet(User user, String text) {
 		NewPost post = new NewPost();
 		post.setText(text);
@@ -14,6 +21,7 @@ public class UserAction {
 		
 	}
 	
+	// user follows another user based on userID
 	public static void followUser(User user, String targetID) {
 		User target = User.findUser(targetID);
         if(target != null && !user.getFollowing().contains(targetID)) {

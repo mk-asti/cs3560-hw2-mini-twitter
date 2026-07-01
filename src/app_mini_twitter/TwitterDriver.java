@@ -1,3 +1,8 @@
+/* 
+ * entry point for mini twitter program
+ * launches admin control panel
+ */
+
 package app_mini_twitter;
 
 import javax.swing.SwingUtilities;

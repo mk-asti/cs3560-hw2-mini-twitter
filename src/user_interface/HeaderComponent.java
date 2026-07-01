@@ -1,3 +1,8 @@
+/*
+ * composite pattern (leaf ui component for section headers)
+ * 	> renders header above sections
+ */
+
 package user_interface;
 
 import java.awt.Font;

@@ -1,3 +1,10 @@
+/*
+ * composite pattern (leaf node)
+ * 	> represents an individual user
+ * 	> extends Subject so followers can be notified for new posts instantaneously
+ * 	> implements Observer, UserComponent, Visitable
+ */
+
 package user_functions.profile;
 
 import java.util.ArrayList;
@@ -36,6 +43,7 @@ public class User extends Subject implements Observer, UserComponent, Visitable 
 		userRegistry.put(this.userID, this);
 	}
 
+	// oberver pattern
 	@Override
 	public void update(NewPost post) {
 		userFeed.addPost(post);
@@ -77,7 +85,7 @@ public class User extends Subject implements Observer, UserComponent, Visitable 
 	}
 	
 	
-	// accepts visitor objects
+	// visitor pattern; accepts visitor objects
 	@Override
 	public void accept(Visitor visitor) {
 		visitor.visit(this);
@@ -89,17 +97,21 @@ public class User extends Subject implements Observer, UserComponent, Visitable 
         this.uiRefreshListeners.add(listener);
     }
 	
-	// uhhh???
+	// triggers all registered feed ui for refresh callbacks
+	// called when user makes new post
 	public void notifyUi() {
 	    for (Runnable listener : uiRefreshListeners) {
 	        SwingUtilities.invokeLater(listener);
 	    }
 	}
 	
+	// registers a UI callback to be triggered when this user's following list updates
+	// used by UV_FollowingLogic to refresh the following list view automatically
 	public void addUiFollowRefreshListener(Runnable listener) {
 	    this.uiFollowRefreshListeners.add(listener);
 	}
 	
+	// triggers all registered following ui refresh callbacks
 	public void notifyFollowUi() {
 	    for (Runnable listener : uiFollowRefreshListeners) {
 	        SwingUtilities.invokeLater(listener);

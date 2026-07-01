@@ -9,10 +9,12 @@ import user_functions.profile.UserGroup;
 
 public class CP_AdminButtonsLogic {
 	private CP_TreeUI treeUI;
+	private CP_TreeLogic treeLogic;
 	
 	public void setTreeUI(CP_TreeUI treeUI) {
-        this.treeUI = treeUI;
-    }
+	    this.treeUI = treeUI;
+	    this.treeLogic = new CP_TreeLogic(treeUI);
+	}
 	
 	public void addUser(String username) {
         if(username == null || username.isBlank()) {
@@ -28,18 +30,18 @@ public class CP_AdminButtonsLogic {
     }
 	
 	public void addGroup(String groupname) {
-		if(groupname == null || groupname.isBlank()) {
-			return;
-		}
-		
-		System.out.println("adding group: " + groupname);
-		
-		UserGroup newGroup = new UserGroup(groupname);
-	    UserGroup.getRoot().addMember(newGroup);
+	    if(groupname == null || groupname.isBlank()) return;
 	    
-	    if(treeUI != null) {
-        	treeUI.refresh();
-        }
+	    UserGroup newGroup = new UserGroup(groupname);
+	    UserComponent selected = (treeLogic != null) ? treeLogic.getSelectedComponent() : null;
+	    
+	    if(selected instanceof UserGroup) {
+	        ((UserGroup) selected).addMember(newGroup);
+	    } else {
+	        UserGroup.getRoot().addMember(newGroup);  // default to root
+	    }
+	    
+	    if(treeUI != null) treeUI.refresh();
 	}
 
 	public void switchUserGroup(String targetGroupName) {
@@ -47,42 +49,32 @@ public class CP_AdminButtonsLogic {
 	        return;
 	    }
 	    
-	    UserComponent selected = treeUI.getSelectedComponent();
+	    UserComponent selected = treeLogic.getSelectedComponent();
+	    UserGroup targetGroup = treeLogic.findGroupByName(targetGroupName);
 	    
-	    
-	    if (!(selected instanceof User)) {
-	        JOptionPane.showMessageDialog(null, "please select a user first.");
+	    if(targetGroup == null) {
+	        JOptionPane.showMessageDialog(null, "group '" + targetGroupName + "' not found.");
 	        return;
 	    }
 	    
-	    User user = (User) selected;
-	    
-	    UserGroup targetGroup = findGroupByName(UserGroup.getRoot(), targetGroupName);
-	    
-	    if (targetGroup != null) {
-	        targetGroup.switchMember(user);
-	        System.out.println("moved " + user.getName() + " to group: " + targetGroupName);
+	    if(selected instanceof User) {
+	        // move user to target group
+	        targetGroup.switchMember((User) selected);
+	        System.out.println("moved user " + selected.getName() + " to group: " + targetGroupName);
 	        
-	        treeUI.refresh();
+	    } else if(selected instanceof UserGroup) {
+	        // move group into target group
+	        UserGroup selectedGroup = (UserGroup) selected;
+	        selectedGroup.getCurrentParent().removeMember(selectedGroup);  // remove from current parent
+	        targetGroup.addMember(selectedGroup);                          // add to target
+	        System.out.println("moved group " + selected.getName() + " to group: " + targetGroupName);
+	        
 	    } else {
-	        JOptionPane.showMessageDialog(null, "group '" + targetGroupName + "' not found.");
-	    }
-	}
-
-	private UserGroup findGroupByName(UserGroup currentGroup, String name) {
-	    if (currentGroup.getName().equalsIgnoreCase(name)) {
-	        return currentGroup;
+	        JOptionPane.showMessageDialog(null, "please select a user or group first.");
+	        return;
 	    }
 	    
-	    for (UserComponent member : currentGroup.getMembers()) {
-	        if (member instanceof UserGroup) {
-	            UserGroup found = findGroupByName((UserGroup) member, name);
-	            if (found != null) {
-	                return found;
-	            }
-	        }
-	    }
-	    return null;
+	    treeUI.refresh();
 	}
 	
     public void showUserView() {
@@ -90,7 +82,7 @@ public class CP_AdminButtonsLogic {
        
     	System.out.println("opening user view window...");
     	
-    	UserComponent selected = treeUI.getSelectedComponent();
+    	UserComponent selected = treeLogic.getSelectedComponent();
     	if(selected instanceof User) {
             new UserViewWindow((User) selected);
         } else {

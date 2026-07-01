@@ -1,3 +1,10 @@
+/*
+ * visitor pattern (concrete visitor implementation)
+ * 	> traverses entire user/usergroup composite tree
+ * 	> collects statistics (total user count, total group count, 
+ * 	> total post count, positive post percentage)
+ */
+
 package admin_service;
 
 import java.util.ArrayList;
@@ -16,6 +23,7 @@ public class UserStatsVisitor implements Visitor {
 	private int totalPositivityCount = 0;
 
 	
+	// visits user node
 	@Override
 	public void visit(User user) {
 		totalUserCount++;	// increment total number of users
@@ -30,6 +38,7 @@ public class UserStatsVisitor implements Visitor {
 		}
 	}
 
+	// visits usergroup node
 	@Override
 	public void visit(UserGroup userGroup) {
 		totalGroupCount++;	// increment group count

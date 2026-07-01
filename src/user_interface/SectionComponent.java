@@ -1,3 +1,9 @@
+/*
+ * composite pattern (composite ui component)
+ * 	> container for list of child UIComponents
+ * 	> renders list of child UIComponents
+ */
+
 package user_interface;
 
 import java.awt.Color;
@@ -13,6 +19,7 @@ public class SectionComponent implements UIComponent {
 	
 	private final List<UIComponent> children = new ArrayList<>();
 
+	// renders and returns panel section
 	@Override
 	public JComponent render() {
 		JPanel section = new JPanel();

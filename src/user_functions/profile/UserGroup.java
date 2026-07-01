@@ -1,3 +1,10 @@
+/*
+ * composite pattern (composite node)
+ * 	> represents a group of UserComponent (Users and/or UserGroups)
+ * 	> implements UserComponent and Visitable
+ * 	> root group is a singleton
+ */
+
 package user_functions.profile;
 
 import java.util.List;
@@ -46,9 +53,21 @@ public class UserGroup implements UserComponent, Visitable {
 	public List<UserComponent> getMembers() {
 		return groupMembers;
 	}
+	private UserGroup currentParent;
+
+	public UserGroup getCurrentParent() { 
+		return currentParent; 
+	}
+	
+	public void setCurrentParent(UserGroup parent) { 
+		this.currentParent = parent; 
+	}
 	
 	public void addMember(UserComponent member) {
-		groupMembers.add(member);
+	    groupMembers.add(member);
+	    if(member instanceof UserGroup) {
+	        ((UserGroup) member).setCurrentParent(this);
+	    }
 	}
 	
 	public void removeMember(UserComponent member) {

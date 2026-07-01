@@ -1,3 +1,9 @@
+/*
+ * composite pattern (ui component for the news feed list in user view)
+ * 	> displays all posts visible to User (own posts, following posts)
+ * 	> supports live refresh
+ */
+
 package user_interface;
 
 import javax.swing.*;
@@ -17,6 +23,7 @@ public class UV_FeedUI implements UIComponent {
         this.logic = logic;
     }
 
+    // build and returns feed panel
     @Override
     public JPanel render() {
         JPanel panel = new JPanel();
@@ -42,6 +49,7 @@ public class UV_FeedUI implements UIComponent {
         return panel;
     }
     
+    // converts posts into strings
     private String[] getFeedStrings() {
         List<NewPost> posts = logic.getFeed();
         return posts.stream()
@@ -50,6 +58,7 @@ public class UV_FeedUI implements UIComponent {
             .toArray(new String[0]);
     }
     
+    // utility: live refresh
     public void refresh() {
         list.setListData(getFeedStrings());
     }
