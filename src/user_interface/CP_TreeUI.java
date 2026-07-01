@@ -44,7 +44,7 @@ public class CP_TreeUI implements UIComponent {
 
         return node;
     }
-
+    
     public JTree getTree() {
         return tree;
     }
