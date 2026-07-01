@@ -1,3 +1,8 @@
+/*
+ * logic class for the admin panel buttons
+ * 	> controls all admin window actions
+ */
+
 package user_interface;
 
 import javax.swing.JOptionPane;

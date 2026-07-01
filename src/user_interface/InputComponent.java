@@ -1,3 +1,9 @@
+/*
+ * composite pattern (leaf ui component for an input field + button pair)
+ * 	> renders a text field and button side by side
+ * 	> text is sent via InputActionListener for processing
+ */
+
 package user_interface;
 
 import java.awt.Dimension;

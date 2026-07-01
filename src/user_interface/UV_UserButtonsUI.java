@@ -1,3 +1,8 @@
+/*
+ * composite pattern (ui component for the user view action buttons)
+ * 	> renders components for user view window
+ */
+
 package user_interface;
 
 import javax.swing.BorderFactory;

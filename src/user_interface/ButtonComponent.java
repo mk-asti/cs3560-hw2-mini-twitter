@@ -1,3 +1,8 @@
+/*
+ * composite pattern (leaf ui component for a standalone button)
+ * 	> renders a single JButton with a fixed size and an attached action listener
+ */
+
 package user_interface;
 
 import java.awt.Dimension;

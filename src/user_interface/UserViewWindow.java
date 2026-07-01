@@ -1,3 +1,9 @@
+/*
+ * represents an individual User View window
+ * 	> opens separate JFrame for each selected user
+ * 	> assembles user view window and panel components
+ */
+
 package user_interface;
 
 import javax.swing.JFrame;

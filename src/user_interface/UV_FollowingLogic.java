@@ -1,3 +1,10 @@
+/*
+ * logic class for the following list section of user view
+ * 	> handles follow user actions
+ * 	> pushes following list data to UV_FollowingUI
+ * 	> registers a UI refresh listener on the User for live feed refresh
+ */
+
 package user_interface;
 
 import user_functions.profile.User;

@@ -1,3 +1,9 @@
+/*
+ * composite pattern (ui component for the admin panel right-side controls)
+ * 	> renders admin control buttons, boxes, and borders
+ * 	> delegates all button click actions to CP_AdminButtonsLogic
+ */
+
 package user_interface;
 
 import java.awt.Dimension;

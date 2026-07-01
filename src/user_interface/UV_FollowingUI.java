@@ -1,3 +1,9 @@
+/*
+ * composite pattern (ui component for the following list in user view)
+ * 	> displays user's follow list
+ * 	> supports live refresh of user's post feed
+ */
+
 package user_interface;
 
 import javax.swing.*;

@@ -1,3 +1,8 @@
+/*
+ * assembles the admin control panel window
+ * 	> combines left (tree view) and right (admin control) panels
+ */
+
 package user_interface;
 
 import java.awt.BorderLayout;

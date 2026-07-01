@@ -1,3 +1,9 @@
+/*
+ * logic class for the news feed section of User View
+ * 	> handles posting new posts and providing feed data to UV_FeedUI
+ * 	> registers a UI refresh listener on the User for live post refresh
+ */
+
 package user_interface;
 
 import user_functions.profile.User;
