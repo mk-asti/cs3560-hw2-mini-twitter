@@ -8,14 +8,37 @@ package user_interface;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import user_functions.profile.User;
+
 
 public class UserViewWindow extends JFrame {
     
     public UserViewWindow(User user) {
+    	
+    	// project 3 additions
         setTitle(user.getName() + "'s View");
+        
+        
+        String lastUpdate = user.getLastUpdateTime() == 0 
+        		? "no posts yet" : formatTime(user.getLastUpdateTime());
+
+        System.out.println("opening view for: " + user.getName() + 
+        		"\n\tuser created: " + formatTime(user.getCreationTime()));
+        System.out.println("\tcurrent group: " + user.getCurrentGroup().getName() + 
+        		"\n\tgroup created: " + formatTime(user.getCurrentGroup().getCreationTime()));
+        
+        if(user.getLastUpdateTime() == 0) {
+        	System.out.println("\tlast updated: n/a (no posts yet)");
+        }
+        else
+        	System.out.println("\tlast updated: " + formatTime(user.getLastUpdateTime()));
+        // - end
+        
         setSize(500, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // only closes this window, not the whole app
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         
         UV_UserButtonsLogic buttonsLogic = new UV_UserButtonsLogic(user);
@@ -34,5 +57,10 @@ public class UserViewWindow extends JFrame {
         feedLogic.setFeedUI(feedView);
         
         setVisible(true);
+    }
+    
+    private String formatTime(long timeMillis) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
+        return sdf.format(new Date(timeMillis));
     }
 }

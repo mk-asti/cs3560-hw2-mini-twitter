@@ -8,6 +8,9 @@
 package user_functions.profile;
 
 import java.util.List;
+import java.util.Map;
+
+import admin_service.ID_Validator;
 import admin_service.Visitable;
 import admin_service.Visitor;
 
@@ -15,11 +18,24 @@ import java.util.ArrayList;
 
 public class UserGroup implements UserComponent, Visitable {
 	private static UserGroup mainRoot;
-	private static int nextID = 1;
 	private String groupID;
 	private String groupName;
 	private List<UserComponent> groupMembers;
 	
+	// project 3 additions
+	private long creationTime;
+	// - end
+	
+	// create a user group with a group name, unique group id, and an empty list of group members
+	public UserGroup (String groupName){
+		this.groupID = groupName;
+		this.groupName = groupName;
+		this.groupMembers = new ArrayList<>();
+		this.creationTime = System.currentTimeMillis();
+		
+		ID_Validator.registerID(this.groupID);
+	}
+		
 	// create and/or navigate to main root
 	public static UserGroup getRoot() {
 		if(mainRoot == null) {
@@ -31,13 +47,6 @@ public class UserGroup implements UserComponent, Visitable {
 		}
 		
 		return mainRoot;
-	}
-	
-	// create a user group with a group name, unique group id, and an empty list of group members
-	public UserGroup (String groupName){
-		this.groupID = String.format("G%04d", nextID++);
-		this.groupName = groupName;
-		this.groupMembers = new ArrayList<>();
 	}
 
 	@Override
@@ -74,6 +83,12 @@ public class UserGroup implements UserComponent, Visitable {
 		groupMembers.remove(member);
 	}
 	
+	// project 3 additions
+	public long getCreationTime() {
+	    return creationTime;
+	}
+	// - end
+	
 	// switch the group a member is in by removing them from their current group and adding them to the new group
 	public void switchMember(User user) {
 		user.getCurrentGroup().removeMember(user);
@@ -91,7 +106,7 @@ public class UserGroup implements UserComponent, Visitable {
 	
 	@Override
 	public String toString() {
-	    return groupName + " (" + groupID + ")";
+	    return groupName;
 	}
 	
 }
