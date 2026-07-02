@@ -8,6 +8,9 @@ package user_functions.profile;
 import user_functions.feed.NewPost;
 
 public class UserAction {
+	// project 3 additions
+	private static User lastPoster = null;
+	// - end
 	
 	// creates new post by a given user
 	public static void newTweet(User user, String text) {
@@ -15,6 +18,12 @@ public class UserAction {
 		post.setText(text);
 		post.setUser(user);
 		user.getUserFeed().addPost(post);
+		
+		// project 3 additions
+		user.setLastUpdateTime(System.currentTimeMillis());
+		lastPoster = user;
+		// - end
+		
 		user.notifyObservers(post);
 		
 		user.notifyUi();
@@ -33,4 +42,11 @@ public class UserAction {
             target.notifyFollowUi();
         }
 	}
+	
+	// project 3 additions
+	public static User getLastPoster() {
+	    
+		return lastPoster;
+	}
+	// - end
 }

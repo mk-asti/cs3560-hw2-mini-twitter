@@ -5,6 +5,7 @@
 
 package user_interface;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -21,8 +22,8 @@ public class CP_TreeUI implements UIComponent {
     @Override
     public JPanel render() {
         JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
         panel.setPreferredSize(new Dimension(200, 440));
-        panel.setBorder(BorderFactory.createLineBorder(java.awt.Color.GRAY));
 
         DefaultMutableTreeNode rootNode = buildTreeNode(UserGroup.getRoot());
         tree = new JTree(new DefaultTreeModel(rootNode));
@@ -50,7 +51,7 @@ public class CP_TreeUI implements UIComponent {
 
         JScrollPane scrollPane = new JScrollPane(tree);
         scrollPane.setPreferredSize(new Dimension(190, 430));
-        panel.add(scrollPane);
+        panel.add(scrollPane, BorderLayout.CENTER);
 
         return panel;
     }

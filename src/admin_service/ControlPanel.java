@@ -32,7 +32,7 @@ public class ControlPanel extends JFrame{
 	private ControlPanel() {
 		UserGroup.getRoot();
 		setTitle("admin control panel");
-		setSize(650, 500);
+		setSize(650, 480);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
