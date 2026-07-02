@@ -7,8 +7,10 @@ package user_interface;
 
 import javax.swing.JOptionPane;
 
+import admin_service.ID_Validator;
 import admin_service.UserStatsVisitor;
 import user_functions.profile.User;
+import user_functions.profile.UserAction;
 import user_functions.profile.UserComponent;
 import user_functions.profile.UserGroup;
 
@@ -26,6 +28,14 @@ public class CP_AdminButtonsLogic {
         	return;
         }
         
+        // prevent duplicate IDs
+        // project 3 additions
+        if(ID_Validator.allIDs.contains(username)) {
+            JOptionPane.showMessageDialog(null, "'" + username + "' is taken :(");
+            return;
+        }
+        // - end
+        
         System.out.println("adding user: " + username);
         new User(username);
         
@@ -36,6 +46,14 @@ public class CP_AdminButtonsLogic {
 	
 	public void addGroup(String groupname) {
 	    if(groupname == null || groupname.isBlank()) return;
+	    
+	    // project 3 additions
+	    // prevent duplicate IDs
+	    if(ID_Validator.allIDs.contains(groupname)) {
+	        JOptionPane.showMessageDialog(null, "'" + groupname + " is taken :(");
+	        return;
+	    }
+	    // - end
 	    
 	    UserGroup newGroup = new UserGroup(groupname);
 	    UserComponent selected = (treeLogic != null) ? treeLogic.getSelectedComponent() : null;
@@ -48,6 +66,14 @@ public class CP_AdminButtonsLogic {
 	    
 	    if(treeUI != null) treeUI.refresh();
 	}
+	
+	public void validateIDs() {
+	    if(ID_Validator.isValid()) {
+	        JOptionPane.showMessageDialog(null, "all IDs are valid :)");
+	    } else {
+	        JOptionPane.showMessageDialog(null, "invalid IDs found: IDs with spaces detected D:");
+	    }
+	}
 
 	public void switchUserGroup(String targetGroupName) {
 	    if (treeUI == null || targetGroupName == null || targetGroupName.isBlank()) {
@@ -58,24 +84,24 @@ public class CP_AdminButtonsLogic {
 	    UserGroup targetGroup = treeLogic.findGroupByName(targetGroupName);
 	    
 	    if(targetGroup == null) {
-	        JOptionPane.showMessageDialog(null, "group '" + targetGroupName + "' not found.");
+	        JOptionPane.showMessageDialog(null, "group '" + targetGroupName + "' not found :(");
 	        return;
 	    }
 	    
 	    if(selected instanceof User) {
 	        // move user to target group
 	        targetGroup.switchMember((User) selected);
-	        System.out.println("moved user " + selected.getName() + " to group: " + targetGroupName);
+	        System.out.println("moved user '" + selected.getName() + "' to group: " + targetGroupName);
 	        
 	    } else if(selected instanceof UserGroup) {
 	        // move group into target group
 	        UserGroup selectedGroup = (UserGroup) selected;
 	        selectedGroup.getCurrentParent().removeMember(selectedGroup);  // remove from current parent
 	        targetGroup.addMember(selectedGroup);                          // add to target
-	        System.out.println("moved group " + selected.getName() + " to group: " + targetGroupName);
+	        System.out.println("moved group '" + selected.getName() + "' to group: " + targetGroupName);
 	        
 	    } else {
-	        JOptionPane.showMessageDialog(null, "please select a user or group first.");
+	        JOptionPane.showMessageDialog(null, "please select a user or group first! :3");
 	        return;
 	    }
 	    
@@ -84,19 +110,17 @@ public class CP_AdminButtonsLogic {
 	
     public void showUserView() {
     	if(treeUI == null) return;
-       
-    	System.out.println("opening user view window...");
     	
     	UserComponent selected = treeLogic.getSelectedComponent();
     	if(selected instanceof User) {
             new UserViewWindow((User) selected);
         } else {
-            JOptionPane.showMessageDialog(null, "please select a user first.");
+            JOptionPane.showMessageDialog(null, "please select a user first! :3");
         }
     }
 
     public void showTotalUsers() {
-        System.out.println("calculating total users...");
+        System.out.println("calculating total users~");
         
         UserStatsVisitor visitor = new UserStatsVisitor();
         UserGroup.getRoot().accept(visitor);
@@ -104,7 +128,7 @@ public class CP_AdminButtonsLogic {
     }
     
     public void showTotalGroups() {
-        System.out.println("calculating total users...");
+        System.out.println("calculating total users~");
         
         UserStatsVisitor visitor = new UserStatsVisitor();
         UserGroup.getRoot().accept(visitor);
@@ -112,7 +136,7 @@ public class CP_AdminButtonsLogic {
     }
     
     public void showTotalPosts() {
-    	System.out.println("calculating total posts...");
+    	System.out.println("calculating total posts~");
     	
     	UserStatsVisitor visitor = new UserStatsVisitor();
         UserGroup.getRoot().accept(visitor);
@@ -120,11 +144,22 @@ public class CP_AdminButtonsLogic {
     }
     
     public void showPositivePercentage() {
-    	System.out.println("calculating positive word post percentage...");
+    	System.out.println("calculating positive word post percentage~");
     	
     	UserStatsVisitor visitor = new UserStatsVisitor();
         UserGroup.getRoot().accept(visitor);
         JOptionPane.showMessageDialog(null, 
             String.format("positive post ratio: %.2f%%", visitor.calculatePercentage()));
     }
+    
+    // project 3 additions
+    public void showLastUpdatedUser() {
+        User lastPoster = UserAction.getLastPoster();
+        if(lastPoster == null) {
+            JOptionPane.showMessageDialog(null, "no users have posted yet O:");
+        } else {
+            JOptionPane.showMessageDialog(null, "last updated user: " + lastPoster.getID());
+        }
+    }
+    // - end
 }

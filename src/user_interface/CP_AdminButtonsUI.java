@@ -41,8 +41,12 @@ public class CP_AdminButtonsUI implements UIComponent {
 	    adminGrid.add(new InputComponent("new user", 150, 30, 15, text -> controller.addUser(text)).render());
 	    adminGrid.add(new InputComponent("new group", 150, 30, 15, text -> controller.addGroup(text)).render());
 	    adminGrid.add(new InputComponent("switch group", 150, 30, 15, text -> controller.switchUserGroup(text)).render());
-	    adminGrid.add(new ButtonComponent("open user view", 345, 30, e -> controller.showUserView()).render());
 	    
+	    // open user view + validate IDs on the same row in admin panel
+	    JPanel bottomRow = new JPanel(new GridLayout(1, 2, 10, 10));
+	    bottomRow.add(new ButtonComponent("open user view", 150, 30, e -> controller.showUserView()).render());
+	    bottomRow.add(new ButtonComponent("validate IDs", 150, 30, e -> controller.validateIDs()).render());
+	    adminGrid.add(bottomRow);
 	    
 	    adminSection.add(() -> adminGrid);
 	    
@@ -55,8 +59,8 @@ public class CP_AdminButtonsUI implements UIComponent {
 	    statsSection.add(new HeaderComponent("service stats"));
 	    
 	    // stats section grid layout
-	    JPanel statsGrid = new JPanel(new GridLayout(2, 2, 10, 10));
-	    statsGrid.setMaximumSize(new Dimension(370, 100));
+	    JPanel statsGrid = new JPanel(new GridLayout(3, 2, 10, 10));
+	    statsGrid.setMaximumSize(new Dimension(370, 150));
 	    statsGrid.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 	    
 	    // add component to stats section
@@ -64,6 +68,10 @@ public class CP_AdminButtonsUI implements UIComponent {
 	    statsGrid.add(new ButtonComponent("group total", 150, 30, e -> controller.showTotalGroups()).render());
 	    statsGrid.add(new ButtonComponent("post total", 150, 30, e -> controller.showTotalPosts()).render());
 	    statsGrid.add(new ButtonComponent("positivity ratio", 150, 30, e -> controller.showPositivePercentage()).render());
+	    
+	    // project 3 addition
+	    statsGrid.add(new ButtonComponent("last updated user", 150, 30, e -> controller.showLastUpdatedUser()).render());
+	    // - end
 	    
 	    statsSection.add(() -> statsGrid);
 	    

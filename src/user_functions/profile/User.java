@@ -14,11 +14,11 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 
 import user_functions.feed.*;
+import admin_service.ID_Validator;
 import admin_service.Visitable;
 import admin_service.Visitor;
 
 public class User extends Subject implements Observer, UserComponent, Visitable {
-	private static int nextID = 1;
 	private static Map<String, User> userRegistry = new HashMap<>();
 	private String userID;
 	private String userName;
@@ -27,26 +27,44 @@ public class User extends Subject implements Observer, UserComponent, Visitable 
 	private List<String> followers;
 	private UserFeed userFeed;
 	
+	// project 3 additions
+	private long creationTime;
+	private long lastUpdateTime;
+	// - end
+	
 	private final List<Runnable> uiRefreshListeners = new ArrayList<>();
 	private final List<Runnable> uiFollowRefreshListeners = new ArrayList<>();
 	
 	// create new user with a unique user id, username, empty following + followers list, empty user feed
 	// place new user in main root group
 	public User(String userName){
-		this.userID = String.format("U%04d", nextID++);
-		this.userName = userName;
-		this.following = new ArrayList<>();
-		this.followers = new ArrayList<>();
-		this.currentGroup = UserGroup.getRoot();
-		this.userFeed = new UserFeed();
-		UserGroup.getRoot().addMember(this);
-		userRegistry.put(this.userID, this);
+		this.userID = userName;
+	    this.userName = userName;
+	    
+	    // project 3 additions
+	    this.creationTime = System.currentTimeMillis();
+	    this.lastUpdateTime = 0;
+	    
+	    ID_Validator.registerID(this.userID);
+	    // - end
+	    
+	    this.following = new ArrayList<>();
+	    this.followers = new ArrayList<>();
+	    this.currentGroup = UserGroup.getRoot();
+	    this.userFeed = new UserFeed();
+	    UserGroup.getRoot().addMember(this);
+	    userRegistry.put(this.userID, this);
 	}
 
 	// oberver pattern
 	@Override
 	public void update(NewPost post) {
 		userFeed.addPost(post);
+		
+		// project 3 additions
+		this.lastUpdateTime = System.currentTimeMillis();
+		// - end
+		
 		notifyUi();
 	}
 
@@ -84,6 +102,20 @@ public class User extends Subject implements Observer, UserComponent, Visitable 
 		return userRegistry.get(userID);
 	}
 	
+	// project 3 additions
+	public long getCreationTime() {
+	    return creationTime;
+	}
+	
+	public long getLastUpdateTime() {
+	    return lastUpdateTime;
+	}
+
+	public void setLastUpdateTime(long time) {
+	    this.lastUpdateTime = time;
+	}
+	// - end
+	
 	
 	// visitor pattern; accepts visitor objects
 	@Override
@@ -120,6 +152,6 @@ public class User extends Subject implements Observer, UserComponent, Visitable 
 	
 	@Override
 	public String toString() {
-	    return userName + " (" + userID + ")";
+	    return userName;
 	}
 }

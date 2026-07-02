@@ -17,6 +17,10 @@ public class NewPost {
 	private User user;
 	private static int totalPostCount = 0;
     private static int totalPositiveCount = 0;
+    
+    // project 3 additions
+    private long creationTime = System.currentTimeMillis();
+    // - end
 	
     // increment total post count and positive content count upon post creation
 	public void setText(String text) {
@@ -77,5 +81,11 @@ public class NewPost {
 	public User getUser (){
 		return user;
 	}
+	
+	// project 3 additions
+    public long getCreationTime() {
+        return creationTime;
+    }
+    // - end
 
 }

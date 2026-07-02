@@ -19,12 +19,15 @@ public class UserStatsVisitor implements Visitor {
 	
 	private int totalUserCount = 0;
 	private int totalGroupCount = 0;
+	public static boolean allIDsUnique = true;
 
 	
 	// visits user node
 	@Override
 	public void visit(User user) {
 		totalUserCount++;	// increment total number of users
+		
+		// - end
 	}
 
 	// visits usergroup node
@@ -48,7 +51,8 @@ public class UserStatsVisitor implements Visitor {
 	}
 
 	public int getPostCount() {
-	    return NewPost.getTotalPostCount();
+	    
+		return NewPost.getTotalPostCount();
 	}
 	
 	// helper method: calculate positivity post percentage

@@ -7,7 +7,6 @@
 package user_interface;
 
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -37,6 +36,8 @@ public class InputComponent implements UIComponent {
 		widget.setLayout(new BoxLayout(widget, BoxLayout.X_AXIS));
 		
         JTextField input = new JTextField(size);
+        input.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        
         JButton button = new JButton(label);
         button.setPreferredSize(new Dimension(length, height));
         
